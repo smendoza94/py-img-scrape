@@ -19,3 +19,7 @@ except requests.exceptions.RequestException as error: # catch any RequestExcepti
 soup = BeautifulSoup(response.content, 'html.parser')
 # find all image tags on the website
 img_tags = soup.find_all('img')
+
+# create a directory to store the images
+if not os.path.exists('images'):
+    os.makedirs('images')
