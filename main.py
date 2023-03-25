@@ -19,18 +19,19 @@ except requests.exceptions.RequestException as error: # catch any RequestExcepti
 soup = BeautifulSoup(response.content, 'html.parser')
 # find all image tags on the website
 img_tags = soup.find_all('img')
+print('Number of images found:', len(img_tags))
 
 # create a directory to store the images
 if not os.path.exists('images'):
     os.makedirs('images')
 
 # download each image and save it in the images directory/folder
-for img_tag in img_tags:
-    img_url = img_tag['src']
-    img_data = img_url.split('/')[-1]
-    with open(os.path.join('images', img_data), 'wb') as handler:
-        img = requests.get(img_url)
-        handler.write(img.content)
+for img_tag in img_tags: 
+    img_url = img_tag['src'] # extract the image URL
+    img_data = os.path.basename(img_url).split('?')[0]  # extract filename and remove query params
+    with open(os.path.join('images', img_data), 'wb') as handler: # open the file in write binary mode
+        img = requests.get(img_url)   # make a GET request to the image URL
+        handler.write(img.content)  # write the image content to the file
 
 # print the total number of images downloaded
 print('Total images downloaded:', len(img_tags))
