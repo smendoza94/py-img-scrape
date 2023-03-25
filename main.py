@@ -23,3 +23,14 @@ img_tags = soup.find_all('img')
 # create a directory to store the images
 if not os.path.exists('images'):
     os.makedirs('images')
+
+# download each image and save it in the images directory/folder
+for img_tag in img_tags:
+    img_url = img_tag['src']
+    img_data = img_url.split('/')[-1]
+    with open(os.path.join('images', img_data), 'wb') as handler:
+        img = requests.get(img_url)
+        handler.write(img.content)
+
+# print the total number of images downloaded
+print('Total images downloaded:', len(img_tags))
